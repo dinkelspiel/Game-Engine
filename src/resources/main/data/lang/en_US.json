@@ -1,0 +1,8 @@
+{
+    "factory.main_screen.play": "Play",
+    "factory.main_screen.options": "Options",
+    "factory.main_screen.exit": "Exit",
+
+    "factory.options.show_fps": "Show FPS",
+    "factory.options.reset_save": "Reset Save"
+}
