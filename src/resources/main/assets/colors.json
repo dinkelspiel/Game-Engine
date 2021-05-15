@@ -17,5 +17,8 @@
 
     "console.background": "#393a3d",
     "console.marker": "#f0f0f2",
-    "console.text": "#f0f0f2"
+    "console.text": "#f0f0f2",
+
+    "switch.on": "#8e9775",
+    "switch.off": "#e28f83"
 }

@@ -39,8 +39,18 @@ class screen_1(Screen):
         self.button2.rect.set_width_constraint(percentage_constraint(0.12))
         self.button2.rect.set_height_constraint(percentage_constraint(0.1))
         self.button2.rect.set_outline_radius(5)
-        self.button2.rect.set_border_radius(30)
+        self.button2.rect.set_border_radius(100)
         self.button2.rect.set_draw_color(self.game.color_handler.get_rgb('main_menu.bright_bg'))
+
+        self.button_bg = gui_rect(game)
+
+        self.button_bg.parent = self.button2.rect
+        self.button_bg.set_x_constraint(center_constraint())
+        self.button_bg.set_y_constraint(center_constraint())
+        self.button_bg.set_width_constraint(percentage_constraint(0.95))
+        self.button_bg.set_height_constraint(percentage_constraint(1))
+        self.button_bg.set_border_radius(100)
+        self.button_bg.set_draw_color(self.game.color_handler.get_rgb('main_menu.bright_bg')) 
 
         self.button_inside_rect = gui_rect(game)
 
@@ -56,6 +66,7 @@ class screen_1(Screen):
         self.button.update()
         self.slider.update()
         self.button2.update()
+        self.button_bg.update()
         self.button_inside_rect.update()
 
         self.button.rect.set_draw_color(self.game.color_handler.get_rgb('main_menu.bright_bg'))
@@ -74,12 +85,17 @@ class screen_1(Screen):
         else:
             self.button_inside_rect.set_draw_color(self.game.color_handler.get_rgb('main_menu.bright_bg'))
         
-        self.button_inside_rect.tween_to(percentage_constraint(0.05), center_constraint(), 24)
+        #self.button_inside_rect.tween_to(percentage_constraint(0.05), center_constraint(), 6)
+        self.button_inside_rect.tween_size(aspect_constraint(1), percentage_constraint(0.8), 12)
+        self.button_bg.set_draw_color(self.game.color_handler.get_rgb('switch.off'))
         if self.button2.toggled:
-            self.button_inside_rect.tween_to(percentage_constraint(0.57), center_constraint(), 24)
+            self.button_bg.set_draw_color(self.game.color_handler.get_rgb('switch.on'))
+            self.button_inside_rect.tween_size(percentage_constraint(0.9), percentage_constraint(0.8), 12)
+            #self.button_inside_rect.tween_to(percentage_constraint(0.57), center_constraint(), 6)
 
     def render(self):
         self.game.renderer.screen.fill(self.game.color_handler.get_rgb('main_menu.background'))
+        self.button_bg.render()
         self.button.render()
         self.slider.render()
         self.button2.render()
