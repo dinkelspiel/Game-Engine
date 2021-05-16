@@ -9,12 +9,9 @@ from .modules.math_utils import math_utils
 from .modules.renderer import renderer
 from .modules.fonts import font_handler
 
-from .modules.screens.screen_1 import screen_1
-from .modules.screens.screen_2 import screen_2
-from .modules.screens.screen_3 import screen_3
-from .modules.screens.screen_4 import screen_4
+from .screens.main_menu import main_menu
 
-class Game:
+class Game_Manager:
 
     game_speed = 1
     clock = pygame.time.Clock()
@@ -56,17 +53,9 @@ class Game:
         self.change_title(self.properties["id"])
         self.input.input_state = "general"
 
-        sscreen_1 = screen_1(self)
-        sscreen_2 = screen_2(self)
-        sscreen_3 = screen_3(self)
-        sscreen_4 = screen_4(self)
-        self.renderer.load_screen(sscreen_1, 'screen_1')
-        self.renderer.load_screen(sscreen_2, 'screen_2')
-        self.renderer.load_screen(sscreen_3, 'screen_3')
-        self.renderer.load_screen(sscreen_4, 'screen_4')
-        self.renderer.switch_screen('screen_1')
-
-        self.screen = 1
+        screen_main_menu = main_menu(self)
+        self.renderer.load_screen(screen_main_menu, 'main_menu')
+        self.renderer.switch_screen('main_menu')
 
     def update(self):
         # Calculate Delta Time
@@ -80,15 +69,6 @@ class Game:
                 self.stop()
             if event.type == pygame.KEYDOWN:
                 self.input.any_key_pressed = True
-
-        if self.input.is_just_pressed('LEFT'):
-            self.screen -= 1
-        if self.input.is_just_pressed('RIGHT'):
-            self.screen += 1
-
-        self.screen = min(4, max(self.screen, 1))
-        if self.renderer.current_screen != 'screen_' + str(self.screen):
-            self.renderer.switch_screen('screen_' + str(self.screen))
 
         # Screens
         self.renderer.update()

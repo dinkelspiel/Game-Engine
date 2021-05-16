@@ -2,7 +2,7 @@ from src.scripts.modules.renderer import Screen
 from src.scripts.modules.gui import *
 import os
 
-class screen_1(Screen):
+class gui_test(Screen):
     def __init__(self, game):
         self.game = game
 

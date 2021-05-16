@@ -1,19 +1,31 @@
 import pygame
 
-class center_constraint():
+class rect_constraints():
     pass
 
-class aspect_constraint():
+class center_constraint(rect_constraints):
+    pass
+
+class aspect_constraint(rect_constraints):
     def __init__(self, aspect_ratio) -> None:
         self.value = aspect_ratio
 
-class percentage_constraint():
+class percentage_constraint(rect_constraints):
     def __init__(self, percentage):
         self.value = percentage
 
-class pixel_constraint():
+class pixel_constraint(rect_constraints):
     def __init__(self, pixel):
         self.value = pixel
+
+class text_size_constraint:
+    pass
+
+class resize_constraint:
+    pass
+
+class samesize_constraint:
+    pass
 
 class gui_rect:
     x_constraint = None
@@ -114,16 +126,16 @@ class gui_rect:
                 if self.parent == None:
                     if class_use == center_constraint:
                         self.x = self.game.renderer.get_screen_size()[0] / 2 - (int(self.width) / 2)
-                    if class_use == percentage_constraint:
+                    elif class_use == percentage_constraint:
                         self.x = self.game.renderer.get_screen_size()[0] * self.x_constraint.value
-                    if class_use == pixel_constraint:
+                    elif class_use == pixel_constraint:
                         self.x = self.x_constraint.value
                 else:
                     if class_use == center_constraint:
                         self.x = self.parent.x + (self.parent.width / 2) - (int(self.width) / 2)
-                    if class_use == percentage_constraint:
+                    elif class_use == percentage_constraint:
                         self.x = self.parent.x + (self.parent.width * self.x_constraint.value)
-                    if class_use == pixel_constraint:
+                    elif class_use == pixel_constraint:
                         self.x = self.parent.x + self.x_constraint.value
 
             # Set Y Constraints
@@ -133,16 +145,16 @@ class gui_rect:
                 if self.parent == None:
                     if class_use == center_constraint:
                         self.y = self.game.renderer.get_screen_size()[1] / 2 - (int(self.height) / 2)
-                    if class_use == percentage_constraint:
+                    elif class_use == percentage_constraint:
                         self.y = self.game.renderer.get_screen_size()[1] * self.y_constraint.value
-                    if class_use == pixel_constraint:
+                    elif class_use == pixel_constraint:
                         self.y = self.y_constraint.value
                 else:
                     if class_use == center_constraint:
                         self.y = self.parent.y + (self.parent.height / 2) - (int(self.height) / 2)
-                    if class_use == percentage_constraint:
+                    elif class_use == percentage_constraint:
                         self.y = self.parent.y + (self.parent.height * self.y_constraint.value)
-                    if class_use == pixel_constraint:
+                    elif class_use == pixel_constraint:
                         self.y = self.parent.y + self.y_constraint.value
 
         ## Set size thingy
@@ -156,16 +168,16 @@ class gui_rect:
                 if self.parent == None:
                     if class_use == percentage_constraint:
                         self.width = self.game.renderer.get_screen_size()[0] * self.width_constraint.value
-                    if class_use == aspect_constraint:
+                    elif class_use == aspect_constraint:
                         self.width = self.height * self.width_constraint.value
-                    if class_use == pixel_constraint:
+                    elif class_use == pixel_constraint:
                         self.width = self.width_constraint.value
                 else:
                     if class_use == percentage_constraint:
                         self.width = self.parent.width * self.width_constraint.value
-                    if class_use == aspect_constraint:
+                    elif class_use == aspect_constraint:
                         self.width = self.height * self.width_constraint.value
-                    if class_use == pixel_constraint:
+                    elif class_use == pixel_constraint:
                         self.width = self.width_constraint.value
 
             # Set Height Constraints
@@ -175,16 +187,16 @@ class gui_rect:
                 if self.parent == None: 
                     if class_use == percentage_constraint:
                         self.height = self.game.renderer.get_screen_size()[1] * self.height_constraint.value
-                    if class_use == aspect_constraint:
+                    elif class_use == aspect_constraint:
                         self.height = self.width * self.height_constraint.value
-                    if class_use == pixel_constraint:
+                    elif class_use == pixel_constraint:
                         self.height = self.height_constraint.value
                 else:
                     if class_use == percentage_constraint:
                         self.height = self.parent.height * self.height_constraint.value
-                    if class_use == aspect_constraint:
+                    elif class_use == aspect_constraint:
                         self.height = self.width * self.height_constraint.value()
-                    if class_use == pixel_constraint:
+                    elif class_use == pixel_constraint:
                         self.height = self.height_constraint.value
 
         # Tween Position
@@ -196,32 +208,32 @@ class gui_rect:
             if self.parent == None:
                 if class_use == center_constraint:
                     tmp_x = self.game.renderer.get_screen_size()[0] / 2 - (int(self.width) / 2)
-                if class_use == percentage_constraint:
+                elif class_use == percentage_constraint:
                     tmp_x = self.game.renderer.get_screen_size()[0] * self.tween_x.value
-                if class_use == pixel_constraint:
+                elif class_use == pixel_constraint:
                     tmp_x = self.tween_x.value
             else:
                 if class_use == center_constraint:
                     tmp_x = self.parent.x + (self.parent.width / 2) - (int(self.width) / 2)
-                if class_use == percentage_constraint:
+                elif class_use == percentage_constraint:
                     tmp_x = self.parent.x + (self.parent.width * self.tween_x.value)
-                if class_use == pixel_constraint:
+                elif class_use == pixel_constraint:
                     tmp_x = self.parent.x + self.tween_x.value
 
             class_use = type(self.tween_y)
             if self.parent == None:
                 if class_use == center_constraint:
                     tmp_y = self.game.renderer.get_screen_size()[1] / 2 - (int(self.height) / 2)
-                if class_use == percentage_constraint:
+                elif class_use == percentage_constraint:
                     tmp_y = self.game.renderer.get_screen_size()[1] * self.tween_y.value
-                if class_use == pixel_constraint:
+                elif class_use == pixel_constraint:
                     tmp_y = self.tween_y.value
             else:
                 if class_use == center_constraint:
                     tmp_y = self.parent.y + (self.parent.height / 2) - (int(self.height) / 2)
-                if class_use == percentage_constraint:
+                elif class_use == percentage_constraint:
                     tmp_y = self.parent.y + (self.parent.height * self.tween_y.value)
-                if class_use == pixel_constraint:
+                elif class_use == pixel_constraint:
                     tmp_y = self.parent.y + self.tween_y.value
 
             self.x += (tmp_x - self.x) / ((self.tween_mult * self.game.delta_time) * 600)
@@ -234,32 +246,32 @@ class gui_rect:
             if self.parent == None:
                 if class_use == percentage_constraint:
                     self.tmp_width = self.game.renderer.get_screen_size()[0] * self.tween_width.value
-                if class_use == aspect_constraint:
+                elif class_use == aspect_constraint:
                     self.tmp_width = self.tmp_height
-                if class_use == pixel_constraint:
+                elif class_use == pixel_constraint:
                     self.tmp_width = self.tween_width.value
             else:
                 if class_use == percentage_constraint:
                     self.tmp_width = self.parent.width * self.tween_width.value
-                if class_use == aspect_constraint:
+                elif class_use == aspect_constraint:
                     self.tmp_width = self.tmp_height
-                if class_use == pixel_constraint:
+                elif class_use == pixel_constraint:
                     self.tmp_width = self.tween_width.value
 
             class_use = type(self.tween_height)
             if self.parent == None: 
                 if class_use == percentage_constraint:
                     self.tmp_height = self.game.renderer.get_screen_size()[1] * self.tween_height.value
-                if class_use == aspect_constraint:
+                elif class_use == aspect_constraint:
                     self.tmp_height = self.tmp_width
-                if class_use == pixel_constraint:
+                elif class_use == pixel_constraint:
                     self.tmp_height = self.self.tmp_height.value
             else:
                 if class_use == percentage_constraint:
                     self.tmp_height = self.parent.height * self.tween_height.value
-                if class_use == aspect_constraint:
+                elif class_use == aspect_constraint:
                     self.tmp_height = self.tmp_width
-                if class_use == pixel_constraint:
+                elif class_use == pixel_constraint:
                     self.tmp_height = self.self.tmp_height.value
                     
             self.width += (self.tmp_width - self.width) / ((self.tween_s_mult * self.game.delta_time) * 600)
@@ -269,6 +281,29 @@ class gui_rect:
         if self.visible:
             pygame.draw.rect(self.game.renderer.screen, self.color, ((self.x, self.y), (self.width, self.height)), self.outline, self.border_radius)
         
+class gui_text:
+    def set_size_constraint(self, constraint):
+        self.size_constraint = constraint
+
+    def __init__(self, game) -> None:
+        self.game = game
+
+        self.text = ""
+        self.draw_text = self.text
+        self.parent = None
+
+    def update(self):
+        if self.parent == None:
+            print('Parent of text field must be set')
+            return
+
+        class_use = type(self.size_constraint)
+        if class_use == resize_constraint:
+            pass    
+
+    def render(self):
+        pass
+
 class gui_toggle_button:
     def __init__(self, game) -> None:
         self.game = game

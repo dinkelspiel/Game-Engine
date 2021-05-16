@@ -1,8 +1,8 @@
 import pygame, time
-from src.scripts.game import Game
+from src.scripts.game_manager import Game_Manager
 from src.scripts.project import *
 
-game = Game()
+game = Game_Manager()
 
 game.initialize()
 
