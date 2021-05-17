@@ -19,6 +19,9 @@
     "console.marker": "#f0f0f2",
     "console.text": "#f0f0f2",
 
+    "enemy.health_bar": "#e28f83",
+    "player.health_bar": "#8e9775",
+
     "switch.on": "#8e9775",
     "switch.off": "#e28f83"
 }

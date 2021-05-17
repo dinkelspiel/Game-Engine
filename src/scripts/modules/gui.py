@@ -265,14 +265,14 @@ class gui_rect:
                 elif class_use == aspect_constraint:
                     self.tmp_height = self.tmp_width
                 elif class_use == pixel_constraint:
-                    self.tmp_height = self.self.tmp_height.value
+                    self.tmp_height = self.tween_height.value
             else:
                 if class_use == percentage_constraint:
                     self.tmp_height = self.parent.height * self.tween_height.value
                 elif class_use == aspect_constraint:
                     self.tmp_height = self.tmp_width
                 elif class_use == pixel_constraint:
-                    self.tmp_height = self.self.tmp_height.value
+                    self.tmp_height = self.tween_height.value
                     
             self.width += (self.tmp_width - self.width) / ((self.tween_s_mult * self.game.delta_time) * 600)
             self.height += (self.tmp_height - self.height) / ((self.tween_s_mult * self.game.delta_time) * 600) 
