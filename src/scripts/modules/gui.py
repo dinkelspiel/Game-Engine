@@ -274,16 +274,25 @@ class gui_rect:
                 elif class_use == pixel_constraint:
                     self.tmp_height = self.tween_height.value
                     
-            self.width += (self.tmp_width - self.width) / ((self.tween_s_mult * self.game.delta_time) * 600)
-            self.height += (self.tmp_height - self.height) / ((self.tween_s_mult * self.game.delta_time) * 600) 
+            self.width += (self.tmp_width - self.width) / self.tween_s_mult
+            self.height += (self.tmp_height - self.height) / self.tween_s_mult
 
     def render(self):
         if self.visible:
-            pygame.draw.rect(self.game.renderer.screen, self.color, ((self.x, self.y), (self.width, self.height)), self.outline, self.border_radius)
+            pygame.draw.rect(self.game.renderer.main_surface, self.color, ((self.x, self.y), (self.width, self.height)), self.outline, self.border_radius)
         
 class gui_text:
+    def set_x_constraint(self, constraint):
+        self.x_constraint = constraint
+
+    def set_y_constraint(self, constraint):
+        self.y_constraint = constraint
+
     def set_size_constraint(self, constraint):
         self.size_constraint = constraint
+
+    def set_color(self, rgb):
+        self.color = rgb
 
     def __init__(self, game) -> None:
         self.game = game
@@ -292,17 +301,57 @@ class gui_text:
         self.draw_text = self.text
         self.parent = None
 
+        self.x, self.y = 0, 0
+
+        self.x_constraint = None
+        self.y_constraint = None
+        self.size_constraint = None
+
+        self.size = 12
+
+        self.color = (0, 0, 0)
+
     def update(self):
         if self.parent == None:
             print('Parent of text field must be set')
             return
 
+        self.draw_text = self.text
+        self.draw_text += '\n'
+        self.draw_text = self.draw_text.split('\n')
+        self.draw_text = self.draw_text[0: -1]
+
+        self.longest_length = 0
+        for i in self.draw_text:
+            length = self.game.font_handler.render(i, 'default', self.size, (0, 0, 0)).get_width()
+            self.longest_length = max(self.longest_length, length)
+
+        class_use = type(self.x_constraint)
+        if class_use == center_constraint:
+            self.x = self.parent.x + (self.parent.width / 2)
+        elif class_use == percentage_constraint:
+            self.x = self.parent.x + (self.parent.width * self.x_constraint.value)
+        elif class_use == pixel_constraint:
+            self.x = self.parent.x + self.x_constraint.value
+
+        class_use = type(self.y_constraint)
+        if class_use == center_constraint:
+            self.y = self.parent.y + (self.parent.height / 2) - (self.size * (len(self.draw_text) - 1)) / 2
+        elif class_use == percentage_constraint:
+            self.y = self.parent.y + (self.parent.width * self.y_constraint.value)
+        elif class_use == pixel_constraint:
+            self.y = self.parent.y + self.y_constraint.value
+
         class_use = type(self.size_constraint)
         if class_use == resize_constraint:
-            pass    
+            pass
+        if class_use == percentage_constraint:
+            self.size = int((self.parent.height * self.size_constraint.value) / len(self.draw_text))
 
     def render(self):
-        pass
+        for i, item in enumerate(self.draw_text):
+            img, rect = self.game.math.rotate_center(self.game.font_handler.render(item, 'default', self.size, self.color), 0, self.x, (self.y + self.size * i))
+            self.game.renderer.main_surface.blit(img, rect)
 
 class gui_toggle_button:
     def __init__(self, game) -> None:
@@ -340,7 +389,7 @@ class gui_press_button:
         else:
             self.hover = False
 
-        if self.hover and self.game.input.is_mouse_button_pressed():
+        if self.hover and self.game.input.is_mouse_button_just_pressed():
             self.pressed = True
         else:
             self.pressed = False

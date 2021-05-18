@@ -8,8 +8,14 @@ from .modules.image import image
 from .modules.math_utils import math_utils
 from .modules.renderer import renderer
 from .modules.fonts import font_handler
+from .modules.debug import Debug
 
-from .screens.main_menu import main_menu
+from .screens.screen_main_menu import screen_main_menu
+from .screens.screen_game import screen_game
+from .screens.screen_settings import screen_settins
+from .screens.screen_lose import screen_lose
+from .screens.screen_win import screen_win
+from .screens.gui_test import gui_test
 
 class Game_Manager:
 
@@ -37,6 +43,7 @@ class Game_Manager:
         self.math = math_utils()
         self.renderer = renderer(self)
         self.font_handler = font_handler(self)
+        self.debug = Debug(self)
 
         self.previous_time = time.time()
 
@@ -53,8 +60,18 @@ class Game_Manager:
         self.change_title(self.properties["id"])
         self.input.input_state = "general"
 
-        screen_main_menu = main_menu(self)
-        self.renderer.load_screen(screen_main_menu, 'main_menu')
+        game_screen = screen_game(self)
+        main_menu_screen = screen_main_menu(self)
+        screen_gui_test = gui_test(self)
+        settings_screen = screen_settins(self)
+        lose_screen = screen_lose(self)
+        win_screen = screen_win(self)
+        self.renderer.load_screen(screen_gui_test, 'gui_test')
+        self.renderer.load_screen(game_screen, 'game')
+        self.renderer.load_screen(main_menu_screen, 'main_menu')
+        self.renderer.load_screen(settings_screen, 'settings')
+        self.renderer.load_screen(lose_screen, 'lose')
+        self.renderer.load_screen(win_screen, 'win')
         self.renderer.switch_screen('main_menu')
 
     def update(self):
@@ -72,6 +89,8 @@ class Game_Manager:
 
         # Screens
         self.renderer.update()
+
+        self.debug.update()
 
     def end_update(self):
         self.input.check_keys()

@@ -1,6 +1,5 @@
 import pygame, time
 from src.scripts.game_manager import Game_Manager
-from src.scripts.project import *
 
 game = Game_Manager()
 
@@ -11,7 +10,6 @@ while game.running:
 
     update_start_time = time.time()
     game.update()
-    update()
     game.end_update()
     update_end_time = time.time()
 
@@ -19,9 +17,9 @@ while game.running:
 
     render_start_time = time.time()
     game.render()
-    render()
     game.end_render()
-
     render_end_time = time.time()
+
+    game.debug.send_stats(update_end_time - update_start_time, render_end_time - render_start_time)
 
 pygame.quit()

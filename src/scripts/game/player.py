@@ -1,6 +1,6 @@
 import pygame, math
 from src.scripts.modules.entity import *
-from .bullet import bullet_shooty_thingy
+from .bullet import *
 from src.scripts.modules.gui import * 
 
 class player_movement_component:
@@ -10,13 +10,13 @@ class player_movement_component:
 
     def update(self):
         move_speed = 300 * self.game.delta_time
-        if self.game.input.is_pressed("a"):
+        if self.game.input.is_pressed("a") and self.parent.transform.x > 0 + 32 + move_speed:
             self.parent.transform.x -= move_speed
-        if self.game.input.is_pressed("d"):
+        if self.game.input.is_pressed("d") and self.parent.transform.x < self.parent.screen.game_surface.get_width() - move_speed - 32:
             self.parent.transform.x += move_speed
-        if self.game.input.is_pressed("w"):
+        if self.game.input.is_pressed("w") and self.parent.transform.y > 0 + 32 + move_speed:
             self.parent.transform.y-= move_speed
-        if self.game.input.is_pressed("s"):
+        if self.game.input.is_pressed("s") and self.parent.transform.y < self.parent.screen.game_surface.get_height() - move_speed - 32:
             self.parent.transform.y += move_speed
 
     def render(self):
@@ -35,23 +35,7 @@ class player_renderer_component:
     def render(self):
         image = pygame.transform.scale(self.image, (64, 64))
         img, rect = self.game.math.rotate_center(image, 0, self.parent.transform.x, self.parent.transform.y)
-        self.game.renderer.screen.blit(img, rect)
-
-class enemy_renderer_component:
-    def __init__(self, game, parent) -> None:
-        self.game = game
-        self.parent = parent
-
-        self.image = self.game.image.load("enemy.png")
-
-    def update(self):
-        pass
-    
-    def render(self):
-        if self.parent.health > 0:
-            image = pygame.transform.scale(self.image, (88, 88))
-            img, rect = self.game.math.rotate_center(image, 0, self.parent.transform.x, self.parent.transform.y)
-            self.game.renderer.screen.blit(img, rect)
+        self.parent.screen.game_surface.blit(img, rect)
 
 class player_health_system:
     def __init__(self, game, parent) -> None:
@@ -72,13 +56,19 @@ class player_health_system:
     def update(self):
         self.health_bar_rect.tween_size(percentage_constraint(0.3 - (0.03 * (10 - self.parent.health))), pixel_constraint(5), 24)
         self.health_bar_rect.update()
+
+        for i, item in enumerate(self.parent.screen.enemy.bullets):
+            if self.game.math.distance_between_points(self.parent.transform.x, self.parent.transform.y, item[0], item[1]) < 60:
+                self.parent.screen.enemy.bullets.pop(i)
+                self.parent.health -= 1
     
     def render(self):
         self.health_bar_rect.render()
 
 class Player(Entity):
-    def __init__(self, game) -> None:
+    def __init__(self, game, screen) -> None:
         self.game = game
+        self.screen = screen
 
         self.game.player = self
 

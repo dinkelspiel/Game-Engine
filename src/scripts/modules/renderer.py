@@ -16,7 +16,9 @@ class renderer:
         self.screens = {}
         self.current_screen = ''
 
+        self.original_size = (1280, 720)
         self.screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
+        self.main_surface = pygame.Surface((self.screen.get_width(), self.screen.get_height()), pygame.SRCALPHA)
 
     def get_screen_size(self):
         return (self.screen.get_width(), self.screen.get_height())
@@ -29,8 +31,14 @@ class renderer:
         self.current_screen = screen_id
 
     def update(self):
+        self.main_surface = pygame.Surface((self.screen.get_width(), self.screen.get_height()), pygame.SRCALPHA)
         self.screens[self.current_screen].update()
 
     def render(self):
         self.screens[self.current_screen].render()
+
+        self.game.debug.render()
+
+        self.screen.blit(self.main_surface, (0, 0))
+
         pygame.display.update()
