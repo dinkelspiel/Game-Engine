@@ -42,12 +42,12 @@ class Input:
 
     def is_just_pressed(self, key, input_state=""):
         keys = pygame.key.get_pressed()
-        key_signature = False
-        exec("key_signature = pygame.K_" + key)
+        code = "self.key_signature = pygame.K_" + key
+        exec(code)
         if input_state != "":
-            return bool(keys[key_signature] and not self.last_frame_keys[self.record_keys.index(key)] and pygame.mouse.get_focused() and input_state == self.input_state)
+            return bool(keys[self.key_signature] and not self.last_frame_keys[self.record_keys.index(key)] and pygame.mouse.get_focused() and input_state == self.input_state)
         else:
-            return bool(keys[key_signature] and not self.last_frame_keys[self.record_keys.index(key)] and pygame.mouse.get_focused())
+            return bool(keys[self.key_signature] and not self.last_frame_keys[self.record_keys.index(key)] and pygame.mouse.get_focused())
 
     def is_any_key_pressed(self):
         return self.any_key_pressed
