@@ -10,11 +10,7 @@ from .modules.renderer import renderer
 from .modules.fonts import font_handler
 from .modules.debug import Debug
 
-from .screens.screen_main_menu import screen_main_menu
-from .screens.screen_game import screen_game
-from .screens.screen_settings import screen_settins
-from .screens.screen_lose import screen_lose
-from .screens.screen_win import screen_win
+from .screens.screen_main import screen_main
 from .screens.gui_test import gui_test
 
 class Game_Manager:
@@ -60,19 +56,11 @@ class Game_Manager:
         self.change_title(self.properties["id"])
         self.input.input_state = "general"
 
-        game_screen = screen_game(self)
-        main_menu_screen = screen_main_menu(self)
+        main_screen = screen_main(self)
         screen_gui_test = gui_test(self)
-        settings_screen = screen_settins(self)
-        lose_screen = screen_lose(self)
-        win_screen = screen_win(self)
         self.renderer.load_screen(screen_gui_test, 'gui_test')
-        self.renderer.load_screen(game_screen, 'game')
-        self.renderer.load_screen(main_menu_screen, 'main_menu')
-        self.renderer.load_screen(settings_screen, 'settings')
-        self.renderer.load_screen(lose_screen, 'lose')
-        self.renderer.load_screen(win_screen, 'win')
-        self.renderer.switch_screen('main_menu')
+        self.renderer.load_screen(main_screen, 'main')
+        self.renderer.switch_screen('main')
 
     def update(self):
         # Calculate Delta Time
@@ -81,12 +69,20 @@ class Game_Manager:
         self.previous_time = now
 
         self.input.any_key_pressed = False
+        for i, item in enumerate(self.input.pressed_keys):
+            self.input.pressed_keys[i] = False
+
+        keys = pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.stop()
             if event.type == pygame.KEYDOWN:
                 self.input.any_key_pressed = True
-
+                for i, key in enumerate(self.input.record_keys):
+                    key_signature = 0
+                    exec("key_signature = pygame.K_" + key)
+                    self.input.pressed_keys[i] = keys[key_signature]
+                        
         # Screens
         self.renderer.update()
 

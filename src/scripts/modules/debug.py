@@ -25,6 +25,8 @@ class Debug:
 
         self.fps = 0
 
+        self.render_hud = False
+
     def send_stats(self, update_time, render_time):
         self.update_time = update_time * 1000
         self.render_time = render_time * 1000
@@ -36,8 +38,8 @@ class Debug:
         self.latest_readings += self.frame_ms
         if self.fps_end_time - self.fps_start_time > 1:
             self.fps_start_time = time.time()
-            print(self.latest_readings)
             self.latest_readings = 0
 
     def render(self):
-        self.debug_gui.render()
+        if self.render_hud:
+            self.debug_gui.render()
