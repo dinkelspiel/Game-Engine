@@ -46,6 +46,9 @@ class gui_rect:
     tween_height = 0
     tween_s_mult = 0
 
+    tween_c = False
+    tween_color_rgb = (0, 0, 0)
+
     tmp_width = 0
     tmp_height = 0
 
@@ -107,6 +110,11 @@ class gui_rect:
         self.tween_width = width
         self.tween_height = height
         self.tween_s_mult = mult
+
+    def tween_color(self, colorrgb, mult):
+        self.tween_c = True
+        self.tween_color_rgb = colorrgb
+        self.tween_color_mult = mult
 
     def __init__(self, game) -> None:
         self.game = game
@@ -276,6 +284,11 @@ class gui_rect:
                     
             self.width += (self.tmp_width - self.width) / self.tween_s_mult
             self.height += (self.tmp_height - self.height) / self.tween_s_mult
+        
+        if self.tween_c:
+            self.color = (self.color[0] + (self.tween_color_rgb[0] - self.color[0]) / self.tween_color_mult,
+                          self.color[1] + (self.tween_color_rgb[1] - self.color[1]) / self.tween_color_mult, 
+                          self.color[2] + (self.tween_color_rgb[2] - self.color[2]) / self.tween_color_mult)
 
     def render(self):
         if self.visible:
