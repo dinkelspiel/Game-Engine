@@ -11,6 +11,7 @@ from .modules.fonts import font_handler
 from .modules.debug import Debug
 
 from .screens.screen_main import screen_main
+from .screens.screen_editor import screen_editor
 from .screens.gui_test import gui_test
 
 class Game_Manager:
@@ -58,9 +59,11 @@ class Game_Manager:
 
         main_screen = screen_main(self)
         screen_gui_test = gui_test(self)
+        editor_screen = screen_editor(self)
         self.renderer.load_screen(screen_gui_test, 'gui_test')
+        self.renderer.load_screen(editor_screen, 'editor')
         self.renderer.load_screen(main_screen, 'main')
-        self.renderer.switch_screen('main')
+        self.renderer.switch_screen('editor')
 
     def update(self):
         # Calculate Delta Time
