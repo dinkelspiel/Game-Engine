@@ -427,7 +427,8 @@ class gui_slider:
 
         self.slider_head.x = max(self.slider_body.x, min(self.slider_head.x, self.slider_body.x + self.slider_body.width))
 
-        self.value = (self.slider_head.x - self.slider_body.x) / (self.slider_body.width / self.value_range[1]) * 1.01
+        if self.slider_head.tween:
+            self.value = (self.slider_head.x - self.slider_body.x) / (self.slider_body.width / self.value_range[1]) * 1.01
 
         mx, my = pygame.mouse.get_pos()
         if self.game.math.in_rect(mx, my, slider_bigger_bounding_box[0][0], slider_bigger_bounding_box[0][1], slider_bigger_bounding_box[1][0], slider_bigger_bounding_box[1][1]) and self.game.input.is_mouse_button_pressed():
