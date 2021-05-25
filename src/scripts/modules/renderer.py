@@ -178,9 +178,11 @@ class fallback_screen(Screen):
         self.button.update()
         self.image.update()
 
-        self.button.rect.tween_color(self.game.color_handler.get_rgb('main_menu.bright_bg_2'), 6)
+        self.button.rect.tween_color(self.game.color_handler.get_rgb('main_menu.bright_bg_2'), 12)
+        self.button.rect.tween_size(pixel_constraint(300), pixel_constraint(100), 12)
         if self.button.hover:
-            self.button.rect.tween_color(self.game.color_handler.get_rgb('main_menu.bright_bg'), 6)
+            self.button.rect.tween_color(self.game.color_handler.get_rgb('main_menu.bright_bg'), 3)
+            self.button.rect.tween_size(pixel_constraint(305), pixel_constraint(105), 3)
 
         if self.button.pressed:
             webbrowser.open('https://github.com/willmexe/Game-Engine')
