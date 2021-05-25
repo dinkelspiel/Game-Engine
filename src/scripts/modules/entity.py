@@ -19,3 +19,15 @@ class Entity:
     def render(self):
         for component in self.components:
             component.render()
+
+class Camera_Relative_Component():
+    def __init__(self, game, parent) -> None:
+        self.game = game    
+        self.parent = parent
+
+    def update(self):
+        self.parent.camera_relative_x = self.parent.transform.x - self.game.renderer.camera.x
+        self.parent.camera_relative_y = self.parent.transform.y - self.game.renderer.camera.y
+
+    def render(self):
+        pass
