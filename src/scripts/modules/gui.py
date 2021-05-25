@@ -75,6 +75,9 @@ class gui_rect:
 
     parent = None
 
+    image = 0
+    image_rotation = 0
+
     ## Set Constraints
 
     # Position Constraints
@@ -129,14 +132,18 @@ class gui_rect:
         self.tween_color_rgb = colorrgb
         self.tween_color_mult = mult
 
-    def __init__(self, game) -> None:
+    def __init__(self, game, parent=None) -> None:
         self.game = game
+        self.parent = parent
         self.visible = True
+        self.show_rect = True
+        self.show_image = True
 
         self.has_initialized = False
 
     def initialize(self):
-        self.parent = self.game.renderer.screen_rect
+        if self.parent == None:
+            self.parent = self.game.renderer.screen_rect
 
     ## Update thingy
 
@@ -249,8 +256,13 @@ class gui_rect:
 
     def render(self):
         if self.visible:
-            pygame.draw.rect(self.game.renderer.main_surface, self.color, ((self.x, self.y), (self.width, self.height)), self.outline, self.border_radius)
-        
+            if self.show_rect:
+                pygame.draw.rect(self.game.renderer.main_surface, self.color, ((self.x, self.y), (self.width, self.height)), self.outline, self.border_radius)
+            if self.image != 0 and self.show_image:
+                image = pygame.transform.scale(self.image, (int(self.width), int(self.height)))
+                img, rect = self.game.math.rotate_center(image, self.image_rotation, self.x + self.width / 2, self.y + self.height / 2)
+                self.game.renderer.main_surface.blit(img, rect)
+
 class gui_text:
     def set_x_constraint(self, constraint):
         self.x_constraint = constraint
@@ -394,77 +406,3 @@ class gui_slider:
     def render(self):
         self.slider_body.render()
         self.slider_head.render()
-
-class gui_image:
-    def __init__(self, game) -> None:
-        self.game = game
-
-        self.image = 0
-        
-        self.rotation = 0
-        self.x = 0
-        self.y = 0
-
-        self.width = 0
-        self.height = 0
-
-    def set_x_constraint(self, constraint):
-        self.x_constraint = constraint
-    
-    def set_y_constraint(self, constraint):
-        self.y_constraint = constraint
-
-    def set_width_constraint(self, constraint):
-        self.width_constraint = constraint
-    
-    def set_height_constraint(self, constraint):
-        self.height_constraint = constraint
-
-    def update(self):
-        if self.parent == None:
-            self.parent = self.game.renderer.screen_rect
-
-        # Set X
-
-        class_use = type(self.x_constraint)
-        if class_use == center_constraint:
-            self.x = self.parent.x + (self.parent.width / 2)
-        elif class_use == percentage_constraint:
-            self.x = self.parent.x + (self.parent.width * self.x_constraint.value)
-        elif class_use == pixel_constraint:
-            self.x = self.parent.x + self.x_constraint.value
-
-        # Set Y
-
-        class_use = type(self.y_constraint)
-        if class_use == center_constraint:
-            self.y = self.parent.y + (self.parent.height / 2)
-        elif class_use == percentage_constraint:
-            self.y = self.parent.y + (self.parent.width * self.y_constraint.value)
-        elif class_use == pixel_constraint:
-            self.y = self.parent.y + self.y_constraint.value
-
-        # Set Width
-
-        class_use = type(self.width_constraint)
-        if class_use == percentage_constraint:
-            self.width = self.parent.width * self.width_constraint.value
-        elif class_use == aspect_constraint:
-            self.width = self.height * self.width_constraint.value
-        elif class_use == pixel_constraint:
-            self.width = self.width_constraint.value
-
-        # Set Height
-
-        class_use = type(self.height_constraint)
-        if class_use == percentage_constraint:
-            self.height = self.parent.height * self.height_constraint.value
-        elif class_use == aspect_constraint:
-            self.height = self.width * self.height_constraint.value()
-        elif class_use == pixel_constraint:
-            self.height = self.height_constraint.value
-
-    def render(self):
-        image = pygame.transform.scale(self.image, (int(self.width), int(self.height)))
-        img, rect = self.game.math.rotate_center(image, self.rotation, self.x, self.y)
-        self.game.renderer.main_surface.blit(img, rect)

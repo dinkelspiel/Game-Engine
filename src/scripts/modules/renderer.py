@@ -147,28 +147,28 @@ class fallback_screen(Screen):
         self.text2.set_x_constraint(center_constraint())
         self.text2.set_y_constraint(percentage_constraint(0.3))
         self.text2.size = 23
-        self.text2.text = "This screen either appeared because you put in a \nInvalid name or you have no screen loaded.\nIf you think this is a bug create a issue on the Github page."
+        self.text2.text = "This screen either appeared because you put in a \ninvalid name for a screen switch or you have no screen loaded.\nIf you think this is a bug create a issue on the Github page."
 
         ## Redirect button
 
         self.button = gui_press_button(game)
         self.button.rect.set_x_constraint(center_constraint())
         self.button.rect.set_y_constraint(percentage_constraint(0.65))
-        self.button.rect.set_width_constraint(percentage_constraint(0.2))
-        self.button.rect.set_height_constraint(percentage_constraint(0.15))
+        self.button.rect.set_width_constraint(pixel_constraint(300))
+        self.button.rect.set_height_constraint(pixel_constraint(100))
         self.button.rect.set_draw_color(self.game.color_handler.get_rgb('main_menu.bright_bg_2'))
         self.button.rect.set_border_radius(10)
 
         ## Redirect Button Image
 
-        self.image = gui_image(game)
-        self.image.parent = self.button.rect
+        self.image = gui_rect(game, self.button.rect)
         self.image.image = self.game.image.load('github.png')
         self.image.set_x_constraint(center_constraint())
         self.image.set_y_constraint(center_constraint())
         self.image.set_width_constraint(aspect_constraint(1))
         self.image.set_height_constraint(percentage_constraint(0.8))
-        
+        self.image.show_rect = False
+
     ## Update
 
     def update(self):
