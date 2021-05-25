@@ -138,15 +138,16 @@ class fallback_screen(Screen):
         self.text = gui_text(game)
         self.text.parent = self.rect
         self.text.set_x_constraint(center_constraint())
-        self.text.set_y_constraint(percentage_constraint(0.25))
+        self.text.set_y_constraint(percentage_constraint(0.35))
+        self.text.set_size_constraint(percentage_constraint(0.1))
         self.text.size = 62
         self.text.text = "Fallback Screen"
 
         self.text2 = gui_text(game)
         self.text2.parent = self.rect
         self.text2.set_x_constraint(center_constraint())
-        self.text2.set_y_constraint(percentage_constraint(0.3))
-        self.text2.size = 23
+        self.text2.set_y_constraint(center_constraint())
+        self.text2.set_size_constraint(percentage_constraint(0.1))
         self.text2.text = "This screen either appeared because you put in a \ninvalid name for a screen switch or you have no screen loaded.\nIf you think this is a bug create a issue on the Github page."
 
         ## Redirect button

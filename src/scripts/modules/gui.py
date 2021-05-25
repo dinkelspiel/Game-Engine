@@ -320,7 +320,7 @@ class gui_text:
         if class_use == center_constraint:
             self.y = self.parent.y + (self.parent.height / 2) - (self.size * (len(self.draw_text) - 1)) / 2
         elif class_use == percentage_constraint:
-            self.y = self.parent.y + (self.parent.width * self.y_constraint.value)
+            self.y = self.parent.y + (self.parent.height * self.y_constraint.value)
         elif class_use == pixel_constraint:
             self.y = self.parent.y + self.y_constraint.value
 
@@ -332,7 +332,8 @@ class gui_text:
 
     def render(self):
         for i, item in enumerate(self.draw_text):
-            img, rect = self.game.math.rotate_center(self.game.font_handler.render(item, 'default', self.size, self.color), 0, self.x, (self.y + self.size * i))
+            #pygame.draw.circle(self.game.renderer.main_surface, (255, 0, 0), (self.x ,self.y) ,4)
+            img, rect = self.game.math.rotate_center(self.game.font_handler.render(item, 'default', self.size, self.color), 0, self.x, ((self.y + self.size * i)))
             self.game.renderer.main_surface.blit(img, rect)
 
 class gui_toggle_button:
