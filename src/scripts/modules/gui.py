@@ -1,4 +1,10 @@
+## Imports
+
 import pygame
+
+## All constraints that can be used
+
+# Rectangle Constraints
 
 class rect_constraints():
     pass
@@ -18,6 +24,8 @@ class pixel_constraint(rect_constraints):
     def __init__(self, pixel):
         self.value = pixel
 
+# Text constraints
+
 class text_size_constraint:
     pass
 
@@ -27,7 +35,12 @@ class resize_constraint:
 class samesize_constraint:
     pass
 
+## Gui Rectangle Class
+
 class gui_rect:
+
+    # Start Vars for everything
+
     x_constraint = None
     y_constraint = None
     width_constraint = None
