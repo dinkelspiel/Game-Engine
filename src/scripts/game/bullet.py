@@ -14,7 +14,7 @@ class bullet_shooty_thingy:
 
     def update(self):
         self.firerate_counter += 100 * self.game.delta_time
-        if self.game.input.is_mouse_button_pressed() and self.firerate_counter > self.firerate:
+        if self.game.input.is_pressed('SPACE') and self.firerate_counter > self.firerate:
             self.firerate_counter = 0
             mx, my = pygame.mouse.get_pos()
             self.parent.bullets.append([self.parent.transform.x, self.parent.transform.y, self.game.math.direction_between_points(self.parent.transform.x, self.parent.transform.y, self.game.relative_mxmy[0], self.game.relative_mxmy[1]) + random.randrange(-5, 5), 400])
