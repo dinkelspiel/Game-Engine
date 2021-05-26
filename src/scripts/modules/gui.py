@@ -162,7 +162,7 @@ class gui_rect:
                 if class_use == center_constraint:
                     self.x = self.parent.x + (self.parent.width / 2) - (int(self.width) / 2)
                 elif class_use == percentage_constraint:
-                    self.x = self.parent.x + (self.parent.width * self.x_constraint.value)
+                    self.x = self.parent.x + (self.parent.width * self.x_constraint.value) - self.width / 2
                 elif class_use == pixel_constraint:
                     self.x = self.parent.x + self.x_constraint.value
 
@@ -173,7 +173,7 @@ class gui_rect:
                 if class_use == center_constraint:
                     self.y = self.parent.y + (self.parent.height / 2) - (int(self.height) / 2)
                 elif class_use == percentage_constraint:
-                    self.y = self.parent.y + (self.parent.height * self.y_constraint.value)
+                    self.y = self.parent.y + (self.parent.height * self.y_constraint.value) - self.height / 2
                 elif class_use == pixel_constraint:
                     self.y = self.parent.y + self.y_constraint.value
 

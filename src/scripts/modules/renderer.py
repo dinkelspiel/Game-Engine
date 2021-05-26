@@ -155,8 +155,8 @@ class fallback_screen(Screen):
         self.button = gui_press_button(game)
         self.button.rect.set_x_constraint(center_constraint())
         self.button.rect.set_y_constraint(percentage_constraint(0.65))
-        self.button.rect.set_width_constraint(pixel_constraint(300))
-        self.button.rect.set_height_constraint(pixel_constraint(100))
+        self.button.rect.set_width_constraint(percentage_constraint(0.2))
+        self.button.rect.set_height_constraint(percentage_constraint(0.1))
         self.button.rect.set_draw_color(self.game.color_handler.get_rgb('main_menu.bright_bg_2'))
         self.button.rect.set_border_radius(10)
 
@@ -180,10 +180,10 @@ class fallback_screen(Screen):
         self.image.update()
 
         self.button.rect.tween_color(self.game.color_handler.get_rgb('main_menu.bright_bg_2'), 12)
-        self.button.rect.tween_size(pixel_constraint(300), pixel_constraint(100), 12)
+        self.button.rect.tween_size(percentage_constraint(0.2), percentage_constraint(0.1), 12)
         if self.button.hover:
             self.button.rect.tween_color(self.game.color_handler.get_rgb('main_menu.bright_bg'), 3)
-            self.button.rect.tween_size(pixel_constraint(305), pixel_constraint(105), 3)
+            self.button.rect.tween_size(percentage_constraint(0.21), percentage_constraint(0.11), 3)
 
         if self.button.pressed:
             webbrowser.open('https://github.com/willmexe/Game-Engine')
