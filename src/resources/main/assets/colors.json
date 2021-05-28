@@ -1,27 +1,4 @@
 {
-    "notification.border": "#495b66",
-    "notification.fill": "#c5d4de",
-    "notification.text": "#272a2e",
-
-    "options.background": "#141517",
-    "options.text": "#ebeff5",
-    
-    "main_menu.background": "#435560", 
-    "main_menu.marker": "#6e7c7c", 
-    "main_menu.text": "#c8c6a7", 
-    "main_menu.dark_text": "#92967d",
-    "main_menu.bright_bg": "#576974",
-    "main_menu.bright_bg_2": "#4d5f6a",
-
-    "game.background": "#5f6169",
-
-    "console.background": "#393a3d",
-    "console.marker": "#f0f0f2",
-    "console.text": "#f0f0f2",
-
-    "enemy.health_bar": "#e28f83",
-    "player.health_bar": "#8e9775",
-
-    "switch.on": "#8e9775",
-    "switch.off": "#e28f83"
+    "engine.background": "#222831",
+    "engine.background_alt": "#393e46"
 }
