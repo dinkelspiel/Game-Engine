@@ -18,7 +18,7 @@ from .modules.debug import Debug
 
 # Screens
 
-from .screens.gui_test import gui_test
+from .screens.engine_main_screen import engine_main_screen
 
 ## Game Manager Class
 
@@ -50,6 +50,7 @@ class Game_Manager:
 
         ## Time
 
+        self.delta_time = 1
         self.game_speed = 1
         self.clock = pygame.time.Clock()
 
@@ -78,6 +79,9 @@ class Game_Manager:
     def initialize(self):
         self.change_title(self.properties["id"])
         self.input.input_state = "general"
+
+        self.renderer.load_screen(engine_main_screen(self), "engine_main")
+        self.renderer.switch_screen("engine_main")
 
     ## Main Update Method
 

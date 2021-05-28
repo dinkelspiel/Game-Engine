@@ -46,21 +46,22 @@ class gui_rect:
     width_constraint = None
     height_constraint = None
 
-    x = 0
-    y = 0
+    x = 0.5
+    y = 0.5
 
     tween = False
     tween_x = 0
     tween_y = 0
-    tween_mult = 0
+    tween_mult = 1
 
     tween_s = False
     tween_width = 0
     tween_height = 0
-    tween_s_mult = 0
+    tween_s_mult = 1
 
     tween_c = False
     tween_color_rgb = (0, 0, 0)
+    tween_color_mult = 1
 
     tmp_width = 0
     tmp_height = 0
@@ -77,6 +78,11 @@ class gui_rect:
 
     image = 0
     image_rotation = 0
+
+    x_constraint = pixel_constraint(0)
+    y_constraint = pixel_constraint(0)
+    width_constraint = pixel_constraint(0)
+    height_constraint = pixel_constraint(0)
 
     ## Set Constraints
 
@@ -115,19 +121,19 @@ class gui_rect:
             return True
         return False
 
-    def tween_to(self, x, y, mult):
+    def set_pos(self, x, y, mult):
         self.tween = True
         self.tween_x = x
         self.tween_y = y
         self.tween_mult = mult
 
-    def tween_size(self, width, height, mult):
+    def set_size(self, width, height, mult):
         self.tween_s = True
         self.tween_width = width
         self.tween_height = height
         self.tween_s_mult = mult
 
-    def tween_color(self, colorrgb, mult):
+    def set_color(self, colorrgb, mult):
         self.tween_c = True
         self.tween_color_rgb = colorrgb
         self.tween_color_mult = mult
@@ -152,107 +158,52 @@ class gui_rect:
         if not self.has_initialized:
             self.initialize()
 
-        ## Set Position thing
-
-        if not self.tween:
-            # Set X Constraints
-
-            if self.x_constraint != None:
-                class_use = type(self.x_constraint)
-                if class_use == center_constraint:
-                    self.x = self.parent.x + (self.parent.width / 2) - (int(self.width) / 2)
-                elif class_use == percentage_constraint:
-                    self.x = self.parent.x + (self.parent.width * self.x_constraint.value) - self.width / 2
-                elif class_use == pixel_constraint:
-                    self.x = self.parent.x + self.x_constraint.value
-
-            # Set Y Constraints
-
-            if self.y_constraint != None:
-                class_use = type(self.y_constraint)
-                if class_use == center_constraint:
-                    self.y = self.parent.y + (self.parent.height / 2) - (int(self.height) / 2)
-                elif class_use == percentage_constraint:
-                    self.y = self.parent.y + (self.parent.height * self.y_constraint.value) - self.height / 2
-                elif class_use == pixel_constraint:
-                    self.y = self.parent.y + self.y_constraint.value
-
-        ## Set size thingy
-
-        if not self.tween_s:
-
-            # Set Width Constraints
-
-            if self.width_constraint != None:
-                class_use = type(self.width_constraint)
-                if class_use == percentage_constraint:
-                    self.width = self.parent.width * self.width_constraint.value
-                elif class_use == aspect_constraint:
-                    self.width = self.height * self.width_constraint.value
-                elif class_use == pixel_constraint:
-                    self.width = self.width_constraint.value
-
-            # Set Height Constraints
-
-            if self.height_constraint != None:
-                class_use = type(self.height_constraint)
-                if class_use == percentage_constraint:
-                    self.height = self.parent.height * self.height_constraint.value
-                elif class_use == aspect_constraint:
-                    self.height = self.width * self.height_constraint.value()
-                elif class_use == pixel_constraint:
-                    self.height = self.height_constraint.value
-
         # Tween Position
 
-        if self.tween:
-            tmp_x = 0
-            tmp_y = 0
-            class_use = type(self.tween_x)
-            if class_use == center_constraint:
-                tmp_x = self.parent.x + (self.parent.width / 2) - (int(self.width) / 2)
-            elif class_use == percentage_constraint:
-                tmp_x = self.parent.x + (self.parent.width * self.tween_x.value)
-            elif class_use == pixel_constraint:
-                tmp_x = self.parent.x + self.tween_x.value
+        tmp_x = 1
+        tmp_y = 1
+        class_use = type(self.tween_x)
+        if class_use == center_constraint:
+            tmp_x = self.parent.x + (self.parent.width / 2) - (int(self.width) / 2)
+        elif class_use == percentage_constraint:
+            tmp_x = self.parent.x + (self.parent.width * self.tween_x.value)
+        elif class_use == pixel_constraint:
+            tmp_x = self.parent.x + self.tween_x.value
+        class_use = type(self.tween_y)
+        if class_use == center_constraint:
+            tmp_y = self.parent.y + (self.parent.height / 2) - (int(self.height) / 2)
+        elif class_use == percentage_constraint:
+            tmp_y = self.parent.y + (self.parent.height * self.tween_y.value)
+        elif class_use == pixel_constraint:
+            tmp_y = self.parent.y + self.tween_y.value
 
-            class_use = type(self.tween_y)
-            if class_use == center_constraint:
-                tmp_y = self.parent.y + (self.parent.height / 2) - (int(self.height) / 2)
-            elif class_use == percentage_constraint:
-                tmp_y = self.parent.y + (self.parent.height * self.tween_y.value)
-            elif class_use == pixel_constraint:
-                tmp_y = self.parent.y + self.tween_y.value
-
-            self.x += (tmp_x - self.x) / ((self.tween_mult * self.game.delta_time) * 600)
-            self.y += (tmp_y - self.y) / ((self.tween_mult * self.game.delta_time) * 600) 
+        self.x += (tmp_x - self.x) / max((self.tween_mult * self.game.delta_time) * 600, 0.1)
+        self.y += (tmp_y - self.y) / max((self.tween_mult * self.game.delta_time) * 600, 0.1) 
 
         # Tween Size
 
-        if self.tween_s:
-            class_use = type(self.tween_width)
-            if class_use == percentage_constraint:
-                self.tmp_width = self.parent.width * self.tween_width.value
-            elif class_use == aspect_constraint:
-                self.tmp_width = self.tmp_height
-            elif class_use == pixel_constraint:
-                self.tmp_width = self.tween_width.value
+        class_use = type(self.tween_width)
+        if class_use == percentage_constraint:
+            self.tmp_width = self.parent.width * self.tween_width.value
+        elif class_use == aspect_constraint:
+            self.tmp_width = self.tmp_height * self.tween_width.value
+        elif class_use == pixel_constraint:
+            self.tmp_width = self.tween_width.value
 
-            class_use = type(self.tween_height)
-            if class_use == percentage_constraint:
-                self.tmp_height = self.parent.height * self.tween_height.value
-            elif class_use == aspect_constraint:
-                self.tmp_height = self.tmp_width
-            elif class_use == pixel_constraint:
-                self.tmp_height = self.tween_height.value
+        class_use = type(self.tween_height)
+        if class_use == percentage_constraint:
+            self.tmp_height = self.parent.height * self.tween_height.value
+        elif class_use == aspect_constraint:
+            self.tmp_height = self.tmp_width * self.tween_height.value
+        elif class_use == pixel_constraint:
+            self.tmp_height = self.tween_height.value
                     
-            self.width += (self.tmp_width - self.width) / self.tween_s_mult
-            self.height += (self.tmp_height - self.height) / self.tween_s_mult
-        
-        if self.tween_c:
-            self.color = (self.color[0] + (self.tween_color_rgb[0] - self.color[0]) / self.tween_color_mult,
-                          self.color[1] + (self.tween_color_rgb[1] - self.color[1]) / self.tween_color_mult, 
-                          self.color[2] + (self.tween_color_rgb[2] - self.color[2]) / self.tween_color_mult)
+        self.width += (self.tmp_width - self.width) / self.tween_s_mult
+        self.height += (self.tmp_height - self.height) / self.tween_s_mult
+
+        self.color = (self.color[0] + (self.tween_color_rgb[0] - self.color[0]) / self.tween_color_mult,
+                      self.color[1] + (self.tween_color_rgb[1] - self.color[1]) / self.tween_color_mult, 
+                      self.color[2] + (self.tween_color_rgb[2] - self.color[2]) / self.tween_color_mult)
 
     def render(self):
         if self.visible:
