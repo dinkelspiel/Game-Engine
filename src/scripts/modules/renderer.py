@@ -65,7 +65,8 @@ class renderer:
         self.screen_rect.set_width_constraint(percentage_constraint(1))
         self.screen_rect.set_height_constraint(percentage_constraint(1))
         self.screen_rect.visible = False
-        self.screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
+        #self.screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
+        self.screen = pygame.display.set_mode((1280, 720))
         self.main_surface = pygame.Surface((self.screen.get_width(), self.screen.get_height()), pygame.SRCALPHA)
 
         ## Load Fallback Screen
