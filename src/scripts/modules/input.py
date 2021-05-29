@@ -89,10 +89,16 @@ class Input:
 
     ## Returns if mb_left is pressed
 
-    def is_mouse_button_pressed(self):
-        return pygame.mouse.get_pressed()[0]
+    def is_mouse_button_pressed(self, input_state=""):
+        if input_state == "":
+            return pygame.mouse.get_pressed()[0]
+        else:
+            return pygame.mouse.get_pressed()[0] and self.input_state == input_state
     
     ## Returns if mb_left was pressed this frame
 
-    def is_mouse_button_just_pressed(self):
-        return pygame.mouse.get_pressed()[0] and not self.mouse_button_last_frame
+    def is_mouse_button_just_pressed(self, input_state=""):
+        if input_state == "":
+            return pygame.mouse.get_pressed()[0] and not self.mouse_button_last_frame
+        else:
+            return pygame.mouse.get_pressed()[0] and not self.mouse_button_last_frame and self.input_state == input_state

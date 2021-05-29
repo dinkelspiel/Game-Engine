@@ -294,6 +294,7 @@ class gui_toggle_button:
     
         self.hover = False
         self.toggled = False
+        self.input_state = ""
 
     def update(self):
         self.rect.update()
@@ -302,7 +303,7 @@ class gui_toggle_button:
         else:
             self.hover = False
 
-        if self.hover and self.game.input.is_mouse_button_just_pressed():
+        if self.hover and self.game.input.is_mouse_button_just_pressed(self.input_state):
             self.toggled = not self.toggled
 
     def render(self):
