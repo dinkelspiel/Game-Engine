@@ -19,6 +19,7 @@ from .modules.debug import Debug
 # Screens
 
 from .screens.engine_main_screen import engine_main_screen
+from .screens.game_screen import game_screen
 
 ## Game Manager Class
 
@@ -81,7 +82,8 @@ class Game_Manager:
         self.input.input_state = "general"
 
         self.renderer.load_screen(engine_main_screen(self), "engine_main")
-        self.renderer.switch_screen("engine_main")
+        self.renderer.load_screen(game_screen(self), "game_screen")
+        self.renderer.switch_screen("game_screen")
 
     ## Main Update Method
 

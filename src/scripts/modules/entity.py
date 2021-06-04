@@ -18,8 +18,28 @@ class Entity:
     ## Remove component from entity
 
     def remove_component(self, component):
-        if component not in self.components:
+        if component in self.components:
             self.components.remove(self.components.index(component))
+
+    ## Get component
+
+    def get_component(self, component):
+        yes = False
+        for index, item in enumerate(self.components):
+            if type(item) == component:
+                yes = True
+                num = index
+                break
+        
+        if yes == True:
+            return self.components[num]
+
+    ## Contains Component
+
+    def contains_component(self, component):
+        if component in self.components:
+            return True
+        return False
 
     ## Use the update method in all the components
 
@@ -48,3 +68,21 @@ class Camera_Relative_Component():
 
     def render(self):
         pass
+
+class Sprite_Renderer_Component():
+    def __init__(self, game, parent) -> None:
+        self.game = game    
+        self.parent = parent
+
+        self.surface = None
+        self.sprite = None
+
+    def update(self):
+        pass
+
+    def render(self):
+        if self.sprite != None and self.surface != None:
+            if self.parent.contains_component(Camera_Relative_Component(self.game, self.parent)):
+                self.surface.blit(self.sprite, (self.parent.camera_relative_x, self.parent.camera_relative_y))
+            else:
+                self.surface.blit(self.sprite, (self.parent.transform.x, self.parent.transform.y))
