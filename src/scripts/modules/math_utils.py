@@ -31,6 +31,11 @@ class math_utils:
         radians = math.atan2(y2-y1, x2-x1)
         return(math.degrees(radians))
 
+    ## Gets the difference between angles
+
+    def angle_difference(self, x, y):
+        return math.atan2(math.sin(x-y), math.cos(x-y))
+
     ## Two functions that return the Vector2 from (0, 0) if you were to go at an angle at a speed for example 
     ## length=2 and angle=45 would go to (1.4, 1.4)
     ## This is useful for example cars in topdown that usually move in a 360 direction

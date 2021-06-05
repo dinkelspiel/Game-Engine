@@ -4,6 +4,7 @@ class Transform:
     def __init__(self) -> None:
         self.x = 0
         self.y = 0
+        self.direction = 0
 
 ## Base Entity
 
